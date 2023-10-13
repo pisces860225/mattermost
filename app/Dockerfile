@@ -1,51 +1,17 @@
-FROM alpine:3.10
+# Using the official Mattermost Team Edition image from Docker Hub with the latest tag
+FROM mattermost/mattermost-team-edition:latest
 
 # Some ENV variables
 ENV PATH="/mattermost/bin:${PATH}"
-ENV MM_VERSION=9.1.0
 
-# Build argument to set Mattermost edition
-ARG edition=enterprise
-ARG PUID=2000
-ARG PGID=2000
-ARG MM_BINARY=
-
-
-# Install some needed packages
-RUN apk add --no-cache \
-	ca-certificates \
-	curl \
-	jq \
-	libc6-compat \
-	libffi-dev \
-	linux-headers \
-	mailcap \
-	netcat-openbsd \
-	xmlsec-dev \
-	tzdata \
-	&& rm -rf /tmp/*
-
-# Get Mattermost
-RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins \
-    && if [ ! -z "$MM_BINARY" ]; then curl $MM_BINARY | tar -xvz ; \
-      elif [ "$edition" = "team" ] ; then curl https://releases.mattermost.com/$MM_VERSION/mattermost-team-$MM_VERSION-linux-amd64.tar.gz | tar -xvz ; \
-      else curl https://releases.mattermost.com/$MM_VERSION/mattermost-$MM_VERSION-linux-amd64.tar.gz | tar -xvz ; fi \
-    && cp /mattermost/config/config.json /config.json.save \
-    && rm -rf /mattermost/config/config.json \
-    && addgroup -g ${PGID} mattermost \
-    && adduser -D -u ${PUID} -G mattermost -h /mattermost -D mattermost \
-    && chown -R mattermost:mattermost /mattermost /config.json.save /mattermost/plugins /mattermost/client/plugins \
-    && curl -o /usr/local/bin/mc https://dl.min.io/client/mc/release/linux-amd64/mc \
-    && chmod a+x /usr/local/bin/mc
-
-RUN curl -L -o /tmp/mattermost-plugin-boards.tar.gz https://github.com/mattermost/focalboard/releases/download/v7.10.6/mattermost-plugin-focalboard.tar.gz \
-    && tar -xzf /tmp/mattermost-plugin-boards.tar.gz -C /mattermost/plugins/ \
-    && chown -R mattermost:mattermost /mattermost/plugins/focalboard
+# Install necessary packages
+RUN apt-get update && apt-get install -y curl jq && rm -rf /var/lib/apt/lists/*
 
 USER mattermost
 
-# Configure entrypoint and command
-COPY entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+# Copy any additional scripts or files if needed
+# COPY entrypoint.sh /
+# ENTRYPOINT ["/entrypoint.sh"]
+
 WORKDIR /mattermost
 CMD ["mattermost", "--config", "/tmp/config.json"]
