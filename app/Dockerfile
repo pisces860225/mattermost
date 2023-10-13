@@ -40,7 +40,7 @@ RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins \
 
 RUN curl -L -o /tmp/mattermost-plugin-boards.tar.gz https://github.com/mattermost/focalboard/releases/download/v7.11.3/mattermost-plugin-focalboard.tar.gz \
     && tar -xzf /tmp/mattermost-plugin-boards.tar.gz -C /mattermost/plugins/ \
-    && chown -R mattermost:mattermost /mattermost/plugins/mattermost-plugin-boards
+    && chown -R mattermost:mattermost /mattermost/plugins/focalboard
 
 USER mattermost
 
