@@ -41,7 +41,6 @@ USER mattermost
 
 # Configure entrypoint and command
 COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 WORKDIR /mattermost
 CMD ["mattermost", "--config", "/tmp/config.json"]
