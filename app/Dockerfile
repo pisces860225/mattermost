@@ -4,8 +4,8 @@ FROM mattermost/mattermost-team-edition:latest
 # Some ENV variables
 ENV PATH="/mattermost/bin:${PATH}"
 
-# Install necessary packages
-RUN apt-get update && apt-get install -y curl jq && rm -rf /var/lib/apt/lists/*
+# Install necessary packages using apk
+RUN apk add --no-cache curl jq
 
 USER mattermost
 
