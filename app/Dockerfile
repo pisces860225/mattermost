@@ -1,6 +1,9 @@
 # Using the official Mattermost Team Edition image from Docker Hub with the latest tag
 FROM mattermost/mattermost-team-edition:latest
 
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
 # Some ENV variables
 ENV PATH="/mattermost/bin:${PATH}"
 
