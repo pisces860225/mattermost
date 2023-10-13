@@ -38,6 +38,10 @@ RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins \
     && curl -o /usr/local/bin/mc https://dl.min.io/client/mc/release/linux-amd64/mc \
     && chmod a+x /usr/local/bin/mc
 
+RUN curl -L -o /tmp/mattermost-plugin-boards.tar.gz https://github.com/mattermost/focalboard/releases/download/v7.11.3/mattermost-plugin-focalboard.tar.gz \
+    && tar -xzf /tmp/mattermost-plugin-boards.tar.gz -C /mattermost/plugins/ \
+    && chown -R mattermost:mattermost /mattermost/plugins/mattermost-plugin-boards
+
 USER mattermost
 
 # Configure entrypoint and command
