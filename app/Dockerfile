@@ -2,7 +2,7 @@ FROM alpine:3.10
 
 # Some ENV variables
 ENV PATH="/mattermost/bin:${PATH}"
-ENV MM_VERSION=5.18.0
+ENV MM_VERSION=9.1.0
 
 # Build argument to set Mattermost edition
 ARG edition=enterprise
@@ -38,7 +38,7 @@ RUN mkdir -p /mattermost/data /mattermost/plugins /mattermost/client/plugins \
     && curl -o /usr/local/bin/mc https://dl.min.io/client/mc/release/linux-amd64/mc \
     && chmod a+x /usr/local/bin/mc
 
-RUN curl -L -o /tmp/mattermost-plugin-boards.tar.gz https://github.com/mattermost/focalboard/releases/download/v7.2.0/mattermost-plugin-focalboard.tar.gz \
+RUN curl -L -o /tmp/mattermost-plugin-boards.tar.gz https://github.com/mattermost/focalboard/releases/download/v7.10.6/mattermost-plugin-focalboard.tar.gz \
     && tar -xzf /tmp/mattermost-plugin-boards.tar.gz -C /mattermost/plugins/ \
     && chown -R mattermost:mattermost /mattermost/plugins/focalboard
 
